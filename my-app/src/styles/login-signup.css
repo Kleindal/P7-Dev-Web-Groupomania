@@ -1,0 +1,47 @@
+#login-page, #signup-page {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ui.form .field > label {
+    text-align: left;
+    font-size: 16px;
+    margin: 12px!important;
+    color: white!important;
+}
+
+
+input::placeholder {
+    color: rgba(133, 133, 133, 0.89)!important;
+}
+
+.ui.form {
+    padding: 10px;
+}
+
+.ui[class*="left icon"].input>i.icon {
+    color: red;
+}
+
+.ui.form .field {
+    margin-bottom: 25px!important;
+}
+
+.ui.form .field input {
+    background-color: transparent!important;
+    color: white;
+    font-size: 13px;
+    padding: 15px!important;
+    border-bottom: white solid 2px!important;
+    border-top: transparent solid 2px!important;
+    border-right: transparent solid 2px!important;
+    border-left: transparent solid 2px!important;
+}
+
+.ui.form .field input:focus {
+    background-color: transparent!important;
+    color: white;
+    border: #be3838 solid 2px!important;
+}

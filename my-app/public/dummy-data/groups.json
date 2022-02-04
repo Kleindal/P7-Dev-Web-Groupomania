@@ -1,14 +1,22 @@
 [
-    {
-        "group-id": 1, 
-        "group-name": "Nom du groupe A"
-    },
-    {
-        "group-id": 2, 
-        "group-name": "Nom du groupe B"
-    },
-    {
-        "group-id": 3, 
-        "group-name": "Nom du groupe C"
-    }
+  {
+    "id": 1,
+    "name": "Nom du groupe A",
+    "thumbnailUrl": "https://bootdey.com/img/Content/avatar/avatar1.png"
+  },
+  {
+    "id": 2,
+    "name": "Nom du groupe B",
+    "thumbnailUrl": "https://bootdey.com/img/Content/avatar/avatar2.png"
+  },
+  {
+    "id": 3,
+    "name": "Nom du groupe C",
+    "thumbnailUrl": "https://bootdey.com/img/Content/avatar/avatar3.png"
+  },
+  {
+    "id": 4,
+    "name": "Nom du groupe D",
+    "thumbnailUrl": "https://bootdey.com/img/Content/avatar/avatar4.png"
+  }
 ]

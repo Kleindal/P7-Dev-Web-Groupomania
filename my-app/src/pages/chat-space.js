@@ -1,103 +1,96 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import reactDom from 'react-dom';
-
-import Box from '../components/test';
 import BoopButton from '../components/send-sound';
 import '../styles/chat-space.css'
 
+import { GroupElement } from '../components/groups/group-element.js';
 import { HttpService } from '../api/http-service';
+
+import { Container, Row, Col } from 'react-bootstrap';
+
+import { MenuNav } from '../components/nav-menu'
+import { GroupAside } from '../components/groups/group-aside';
+
 const http = new HttpService();
 
+export default class ChatSpace extends React.Component
+{
+  // data.map
 
-let data;
+  constructor(props) {
+    super(props);
 
-const ChatSpace = () => {
-    // data.map
+    this.state = {
+        items: [],
+        DataisLoaded: false
+    };
+  }
 
-
+  componentDidMount() {
     http.get('/api/groups')
-        .then(data => {
-            console.log(data)
-            data = data
-        } 
-        );
+    .then(data => {
+      console.log(data);
+      this.setState({
+        items: data,
+        DataisLoaded: true
+    });
+    }
+    );
+  }
 
-    return (<div>
-        
-        <div className='ui segment'>
-            <p></p>
-        </div>
+  render() {
+      const { DataisLoaded, items } = this.state;
+      if (!DataisLoaded) return <div>
+          <h1> Pleses wait some time.... </h1> </div> ;
 
-        <div className='container' key={1}>
+      return (
+        <div>
+        <Container className='container' key={1}>
+
+          <Row>
+          <MenuNav />
+          <Col>
             <div className='group-aside'>
+            <div>Titre</div>
 
 
-                {data&& data.map((current, index) => {
-                    return(
-                        <div className='group-topic'>
-                            <div className='topic-image'>
-                                <div className='topic-name' id='topic-name' key={current.id}>{current.groupName}</div>
-                                <img src='https://www.rustica.fr/images/pic-midi-bigorre-l760-h550.jpg' alt='mountains_image_user'></img>
-                            </div>
-                            <div className='user-about' id='user-about'>User 1, User 2, User 3</div>
-                        </div>
-                    )
+              {/* {data && data.map((current, index) => {
+                return (
+                  <div className='group-topic'>
+                    <div className='topic-image'>
+                      <div className='topic-name' id='topic-name' key={current.id}>{current.groupName}</div>
+                    </div>
+                  </div>)
                 })
+              } */}
+              <GroupAside>
+              {items && items.map((current, index) => {
+                return (
+                  <GroupElement
+                    key={index}
+                    name={current.name}
+                    thumbnailUrl={current.thumbnailUrl}
+                    isOnline={true}
+                  />
+                )})}
+              </GroupAside>
 
-            }
-
-
-
-
-                <div className='create-group'>
-                    <div className='ui icon button'>
-                        <i className='plus icon'></i>
-                    </div>
-                </div>
+              <div className='user-about' id='user-about'>User 1, User 2, User 3</div>
             </div>
-            <div className='box-chat'>
-                <div className='attachements'>
-                <div className='create-group'>
-                    <div className='ui animated fade button' tabIndex='0'>
-                        <div className='visible content'>
-                        <i className='paperclip icon' id='attachement'></i>
-                        </div>
-                        <div className='hidden content'>Fichier</div>
-                    </div>
-                </div>               
-                </div>
-                <div className='send-message'>
-                    <BoopButton></BoopButton>
-                </div>
-            </div>
-            <div className='main-chat'>
-                {/* <div className='main-read'>Premier Topic</div> */}
-                <div className='user-chat'>
-                </div>
-            </div>
-            <div className='settings'>
-              <div className='log-out'>
-                <Link to="/"><i className='power off icon' id='log_out'></i></Link>
-              </div>
-              <div className='cog'>
-                <i className='cog icon' id='setting'></i>
-              </div>
-              <div className='contact'>
-                <i className='adress book icon' id='contact'></i>
-              </div>
-            </div>
-        </div>
-    </div>);
-};
+
+          </Col>
+          </Row>
+        </Container>
 
 
-    // fetch('../assets/dummy-data.json')
-    // .then((res) => res.json())
-    // .then(function getGroupsInfo(data) {
-    //   console.log()
-    // });
-    
+      </div>
+  );
 
+  }
+}
 
-export default ChatSpace
+// fetch('../assets/dummy-data.json')
+// .then((res) => res.json())
+// .then(function getGroupsInfo(data) {
+//   console.log()
+// });

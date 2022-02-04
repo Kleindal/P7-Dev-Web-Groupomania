@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './components/App';
 import LoginPage from "./pages/login-page";
 import SignupPage from "./pages/signup-page";
@@ -21,6 +22,7 @@ if (module.hot) {
 }
 
 ReactDOM.render(
+  
   // <React.StrictMode>
     <BrowserRouter>
       <App>
@@ -29,6 +31,7 @@ ReactDOM.render(
             <Route path="login" element={<LoginPage />} />
             <Route path="signup" element={<SignupPage />} />
             <Route path="chatspace" element={<ChatSpace />} />
+            {/* <Route path="menunav" element={<MenuNav />} /> */}
           </Routes>
       </App>,
     </BrowserRouter>,

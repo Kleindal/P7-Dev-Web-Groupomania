@@ -1,6 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import './user-setting.css'
+import { Button } from 'react-bootstrap';
 
-function userSetting () {
+export const UserSetting = () => {
     return (
     <div className='settings'>
         <div className='log-out'>
@@ -22,7 +25,5 @@ function userSetting () {
         </div>
     </div>
     )
-}
-
-ReactDOM.render(<userSetting />, document.getElementById('root'))
+};
 

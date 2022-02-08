@@ -1,56 +1,49 @@
 import React from 'react'
-import { Button, Form, Grid } from 'semantic-ui-react';
+
 import { Link } from 'react-router-dom';
+import "../styles/login-signup.css";
+import 'bootstrap/dist/css/bootstrap.css';
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 const SignupPage = () => (
   <div id='signup-page'>
-    <div>
-      <h2>Rejoins l'équipe dès à présent !</h2>
-      <br/>
+    <Form>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Adresse email</Form.Label>
+        <Form.Control type="email" placeholder="Enter email" />
+        <Form.Text className="text-muted">
+          Ne partagez pas votre adresse email à qui que ce soit
+        </Form.Text>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Confirmez votre adresse email</Form.Label>
+        <Form.Control type="email" placeholder="Enter email" />
+        <Form.Text className="text-muted">
+          Ne partagez pas votre adresse email à qui que ce soit
+        </Form.Text>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Mot de passe</Form.Label>
+        <Form.Control type="password" placeholder="Password" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Confirmez le mot de passe</Form.Label>
+        <Form.Control type="password" placeholder="Password" />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        <Form.Check type="checkbox" label="Je confirme les CGU, lien." />
+        <br></br>
+        <Button as="input" type="submit" value="Submit" />{' '}
+      </Form.Group>
+      <br></br>
+      <Link to="/">Retour</Link>
+    </Form>
     </div>
-    <Grid columns={1} relaxed='very' stackable>
-      <Grid.Column>
-        <Form>
-        <Form.Input
-            label='Votre Prénom'
-            placeholder='Prénom'
-          />
-          <Form.Input
-            label='Votre Nom'
-            placeholder='Nom'
-          />
-          <Form.Input
-            icon='caret right'
-            iconPosition='left'
-            label='Entrez votre mail'
-            placeholder='votre-adresse@mail.com'
-          />
-          <Form.Input
-            icon='caret right'
-            iconPosition='left'
-            label='Confirmez votre mail'
-            placeholder='votre-adresse@mail.com'
-          />
-          <Form.Input
-            icon='lock'
-            iconPosition='left'
-            label='Mot de passe'
-            type='password'
-          />
-          <Form.Input
-            icon='caret right'
-            iconPosition='left'
-            label='Confirmez votre mot de passe'
-            type='password'
-          />
-          <Button inverted color='blue'>Je m'inscris !</Button>
-        </Form>
-      </Grid.Column>
-      <Grid.Column verticalAlign='middle'>
-      </Grid.Column>
-    </Grid>
-    <Link to="/"><Button basic inverted color='red'>Retour</Button></Link>
-  </div>
 )
+
 
 export default SignupPage

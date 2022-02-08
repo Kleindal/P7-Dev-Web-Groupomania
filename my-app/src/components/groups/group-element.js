@@ -1,9 +1,8 @@
 import React from 'react';
 import './group-element.css';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 
 export const GroupElement = (props) => (
-
   <div className='group-header'>
     <Row xs="auto" className='header'>
       <Col>
@@ -13,7 +12,6 @@ export const GroupElement = (props) => (
             alt="avatar"
           />
       </div>
-
       </Col>
       <Col xs={6}>
         <div className="name">
@@ -21,14 +19,10 @@ export const GroupElement = (props) => (
         </div>
         <div className="status">
           {props.isOnline ? 'Online' : 'Offline'}
-          <i className="fa fa-circle offline" /> left 7 mins ago{" "}
+          <i class="bi bi-circle-fill"></i> left 7 mins ago{" "}
         </div>
       </Col>
-
-
     </Row>
-
-
   </div>
 
 )

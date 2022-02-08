@@ -16,10 +16,11 @@ img {
 
 .group-header {
   flex-wrap: nowrap;
-  height: 74px;
+  height: auto;
+  padding: 5px;
   width: auto;
-  background-color: rgb(73, 73, 252);
-  margin: 10px;
+  background-color: rgb(235, 235, 235);
+  border-bottom: 1px solid #868686;
 }
 
 .group-header div {
@@ -31,4 +32,12 @@ img {
 .status {
   font-size: 11px;
   font-weight: 400;
+}
+
+.status:Online {
+  fill: lightgreen;
+}
+
+.status:Offline {
+  fill: red;
 }

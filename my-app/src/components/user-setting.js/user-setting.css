@@ -1,0 +1,13 @@
+.settings {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly!important;
+  font-size: 20px;
+  height: 100px;
+  margin-bottom: 0;
+}
+
+.settings i{
+  color: white;
+}

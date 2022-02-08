@@ -26,7 +26,7 @@ a:active {}
   }
 }
 
-.App-header {
+/* .App-header {
   background-color: #ffffff;
   min-height: 100vh;
   display: flex;
@@ -35,7 +35,7 @@ a:active {}
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
+} */
 
 .App-header p {
   color: white;

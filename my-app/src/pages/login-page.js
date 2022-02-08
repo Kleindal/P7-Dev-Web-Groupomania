@@ -1,9 +1,11 @@
 import React from 'react'
 
 import { Link } from 'react-router-dom';
+
 import "../styles/login-signup.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 const LoginPage = () => (
   <div id='login-page'>
@@ -21,13 +23,13 @@ const LoginPage = () => (
         <Form.Control type="password" placeholder="Password" />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Check me out" />
+        <Form.Check type="checkbox" label="Rester connecté" />
+        <br></br>
+        <Button as="input" type="submit" value="Submit" />{' '}
       </Form.Group>
-
-      Submit
-
+      <br></br>
+      <Link to="/">Retour</Link>
     </Form>
-    <Link to="/">Retour</Link>
     </div>
 )
 

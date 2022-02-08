@@ -1,22 +1,22 @@
 [
   {
     "id": 1,
-    "name": "Nom du groupe A",
+    "name": "Premier groupe",
     "thumbnailUrl": "https://bootdey.com/img/Content/avatar/avatar1.png"
   },
   {
     "id": 2,
-    "name": "Nom du groupe B",
+    "name": "Deuxième groupe",
     "thumbnailUrl": "https://bootdey.com/img/Content/avatar/avatar2.png"
   },
   {
     "id": 3,
-    "name": "Nom du groupe C",
+    "name": "Troisième groupe",
     "thumbnailUrl": "https://bootdey.com/img/Content/avatar/avatar3.png"
   },
   {
     "id": 4,
-    "name": "Nom du groupe D",
+    "name": "Quatrième groupe",
     "thumbnailUrl": "https://bootdey.com/img/Content/avatar/avatar4.png"
   }
 ]

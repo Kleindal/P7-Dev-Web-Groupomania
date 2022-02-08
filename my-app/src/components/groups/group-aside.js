@@ -3,13 +3,10 @@ import './group-element.css';
 import { Row, Col } from 'react-bootstrap';
 
 
-
-
-
 export const GroupAside = ({children}) => (
 
   <div className='group-aside'>
-    <h1>Yes</h1>
+    <h2>Groupes</h2>
       <Col>
         {children}
       </Col>
@@ -17,9 +14,6 @@ export const GroupAside = ({children}) => (
   </div>
 
 )
-
-
-
 
 // const groupElements = [];
 // for (var i=0; i < 1; i++) {

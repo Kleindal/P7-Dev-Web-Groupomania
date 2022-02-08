@@ -4,9 +4,10 @@ import BoopButton from '../components/send-sound';
 import '../styles/chat-space.css'
 
 import { GroupElement } from '../components/groups/group-element.js';
+import { UserSetting } from '../components/user-setting.js/user-setting';
 import { HttpService } from '../api/http-service';
 
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col} from 'react-bootstrap';
 
 import { MenuNav } from '../components/nav-menu'
 import { GroupAside } from '../components/groups/group-aside';
@@ -16,7 +17,6 @@ const http = new HttpService();
 export default class ChatSpace extends React.Component
 {
   // data.map
-
   constructor(props) {
     super(props);
 
@@ -44,16 +44,17 @@ export default class ChatSpace extends React.Component
           <h1> Pleses wait some time.... </h1> </div> ;
 
       return (
-        <div>
+        <div className='card chat-app'>
+
         <Container className='container' key={1}>
 
           <Row>
           <MenuNav />
           <Col>
+          <div className='people-list' id='plist'>
+          <Link to="/">Retour</Link>
             <div className='group-aside'>
-            <div>Titre</div>
-
-
+            <div>Titre du topic</div>
               {/* {data && data.map((current, index) => {
                 return (
                   <div className='group-topic'>
@@ -74,14 +75,20 @@ export default class ChatSpace extends React.Component
                   />
                 )})}
               </GroupAside>
+              <UserSetting />
+              <div className='about' id='about'>CGU</div>
 
-              <div className='user-about' id='user-about'>User 1, User 2, User 3</div>
+              </div>
+              <div className='chat'>
+                <div className='chat-history'>
+                  {/* Message-data text-right */}
+
+                </div>
+                </div>
             </div>
-
           </Col>
           </Row>
         </Container>
-
 
       </div>
   );

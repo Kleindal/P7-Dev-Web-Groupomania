@@ -9,6 +9,9 @@ import Button from 'react-bootstrap/Button'
 const SignupPage = () => (
   <div id='signup-page'>
     <Form>
+    <div className='title-hype wslide'>
+      S ' inscrire
+    </div>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Adresse email</Form.Label>
         <Form.Control type="email" placeholder="Enter email" />

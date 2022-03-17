@@ -1,17 +1,19 @@
 import React from 'react';
 import './group-element.css';
-import { Row, Col } from 'react-bootstrap';
-
+import '../../styles/styles.root.css'
+import { Col } from 'react-bootstrap';
+// import UserCard from '../user-setting.js/user-card';
 
 export const GroupAside = ({children}) => (
 
   <div className='group-aside'>
-    <h2>Groupes</h2>
+    {/* <UserCard /> */}
+    <h3>Groupes</h3>
       <Col>
         {children}
       </Col>
-
   </div>
+
 
 )
 

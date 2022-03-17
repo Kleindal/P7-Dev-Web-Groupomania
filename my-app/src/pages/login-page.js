@@ -9,7 +9,13 @@ import Button from 'react-bootstrap/Button'
 
 const LoginPage = () => (
   <div id='login-page'>
+
     <Form>
+    <div className='title-hype wslide'>
+      <div>
+        <span>Connexion</span>
+      </div>
+    </div>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Adresse email</Form.Label>
         <Form.Control type="email" placeholder="Enter email" />

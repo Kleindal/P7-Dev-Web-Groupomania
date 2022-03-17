@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;800&display=swap');
+
+:root {
+  --primary-color: #4639f7;
+  --secondary-color: black;
+  --contrast: #25252510;
+
+  --primary-bg: #fff;
+  --secondary-bg: #333333;
+
+  --valid-color: #5ce700;
+  --invalid-color: #f33838;
+
+  --text-color1: #fff;
+  --text-color2: #252525;
+  --text-color3: #4bc588;
+
+  /* buttons */
+  --button-padding: 10px 20px;
+  --button-font-color: #fff;
+  --primary-button: #4639f7;
+  --secondary-button: #2F26A5;
+
+  /* font */
+  --font-s: 12px "Inter", "Arial", "Helvetica", sans-serif;
+  --font-md: 14px "Inter", "Arial", "Helvetica", sans-serif;
+  --font-lg: 16px "Inter", "Arial", "Helvetica", sans-serif;
+  --font-xl: bold 26px Inter, "Arial", "Helvetica", sans-serif;
+  /*  */
+}

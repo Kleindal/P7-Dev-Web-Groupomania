@@ -1,11 +1,9 @@
 import './App.css';
 
-
-
 function App({children}) {
   return (
     <div className="App">
-      <header className="App-header">
+      <header className='main-header'>
         <div className='style'>
         {/* <Group /> */}
         {children}

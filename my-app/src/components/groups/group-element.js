@@ -1,6 +1,7 @@
 import React from 'react';
 import './group-element.css';
-import { Row, Col, Button } from 'react-bootstrap';
+import '../../styles/styles.root.css'
+import { Row, Col } from 'react-bootstrap';
 
 export const GroupElement = (props) => (
   <div className='group-header'>
@@ -19,7 +20,7 @@ export const GroupElement = (props) => (
         </div>
         <div className="status">
           {props.isOnline ? 'Online' : 'Offline'}
-          <i class="bi bi-circle-fill"></i> left 7 mins ago{" "}
+          <i className="bi bi-circle-fill"></i> left 7 mins ago{" "}
         </div>
       </Col>
     </Row>

@@ -17,7 +17,6 @@ const UidContext = createContext();
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
-styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
 
@@ -28,7 +27,7 @@ if (module.hot) {
 ReactDOM.render(
 
   // <React.StrictMode>
-  // <BrowserRouter></BrowserRouter>
+  <BrowserRouter>
     <Provider store= {store}>
       <App>
       <UidContext.Provider value={"uid"}>
@@ -40,8 +39,9 @@ ReactDOM.render(
             <Route path="messages" element={<MessagesChat />} />
           </Routes>
       </UidContext.Provider>
-      </App>,
-    </Provider>,
+      </App>
+    </Provider>
+  </BrowserRouter>,
   // </React.StrictMode>,
   document.getElementById('root')
 );

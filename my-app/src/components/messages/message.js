@@ -1,36 +1,30 @@
-import { render } from "@testing-library/react";
-import React, { useEffect, useState }  from "react";
-import { useDispatch, useSelector} from "react-redux";
-import getGroup from "../../action";
+import React from "react";
 
-const MessagesChat = () => {
-  const [
-    loadingGroup, setLoadingGroup
-  ] = useState(false)
+import '../../styles/styles.root.css'
 
-  const dispatch = useDispatch()
 
-  const groupList = useSelector(state => state.GroupReducer)
-  console.log(groupList)
-
-  useEffect(() => {
-    if (!loadingGroup) {
-      dispatch(getGroup());
-      setLoadingGroup(true)
-    }
-  },
-  [loadingGroup, dispatch])
-  return(
-    <div>
-      {loadingGroup && groupList.map((group, index) => {
-        return(
-          <div key={group.id}>
-            group.name
+function Message({title, body, date, isMine, attachment}) {
+    return(
+      <>
+        <div className="p-3 mb-3 message-design" style={{
+            marginLeft: isMine ? 'auto' : '0px',
+            textAlign: isMine ? 'right' : 'left'
+          }}>
+            <div>
+              <p>{title}</p>
+              <p className="mb-2 text-muted">{date}</p>
+              <p>{body}</p>
+              {attachment &&
+                <div className="file-name">
+                  Fichier: {attachment}
+                </div>
+              }
+            </div>
           </div>
-        )
-      })}
-    </div>
-  )
+      </>
+    )
+
 }
 
-export default MessagesChat
+
+export default Message

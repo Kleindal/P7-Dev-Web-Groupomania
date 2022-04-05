@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import SignupPage from '../../pages/signup-page';
+import SignupPage from '../pages/signup-page';
 
 function App({children: login}) {
   return (

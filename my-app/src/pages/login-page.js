@@ -1,8 +1,7 @@
 import React from 'react'
-
 import { Link } from 'react-router-dom';
 
-import "../styles/login-signup.css";
+import "../styles/styles.root.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -10,14 +9,14 @@ import Button from 'react-bootstrap/Button'
 const LoginPage = () => (
   <div id='login-page'>
 
-    <Form>
+    <Form aria-checked>
     <div className='title-hype wslide'>
       <div>
         <span>Connexion</span>
       </div>
     </div>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Adresse email</Form.Label>
+        <Form.Label>Adresse Email</Form.Label>
         <Form.Control type="email" placeholder="Enter email" />
         <Form.Text className="text-muted">
           Ne partagez pas votre adresse email à qui que ce soit

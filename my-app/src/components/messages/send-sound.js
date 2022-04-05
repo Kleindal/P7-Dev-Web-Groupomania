@@ -1,5 +1,5 @@
 import useSound from 'use-sound';
-import boopSfx from '../assets/sounds/send-sound.wav';
+import boopSfx from '../../assets/sounds/send-sound.wav';
 
 
 // send button

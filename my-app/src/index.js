@@ -1,12 +1,11 @@
 import React, { createContext } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import App from './components/App';
+import App from './App';
 import LoginPage from "./pages/login-page";
 import SignupPage from "./pages/signup-page";
 import ChatSpace from "./pages/chat-space";
-import MessagesChat from "./components/messages/message";
+import MessagesChat from "./components/MessageList";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from 'react-redux';

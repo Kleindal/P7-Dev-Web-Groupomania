@@ -1,20 +1,21 @@
 import React from 'react';
-import './group-element.css';
-import '../../styles/styles.root.css'
+import '../styles/styles.root.css'
 import { Row, Col } from 'react-bootstrap';
 
 export const GroupElement = (props) => (
   <div className='group-header'>
-    <Row xs="auto" className='header'>
+    <Row>
       <Col>
-      <div>
-        <img
+        <div>
+          <img
             src={props.thumbnailUrl}
             alt="avatar"
           />
-      </div>
+        </div>
       </Col>
-      <Col xs={6}>
+    </Row>
+    <Row>
+      <Col>
         <div className="name">
           {props.name}
         </div>
@@ -24,6 +25,7 @@ export const GroupElement = (props) => (
         </div>
       </Col>
     </Row>
+
   </div>
 
 )

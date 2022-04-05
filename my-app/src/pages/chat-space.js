@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import BoopButton from '../components/send-sound';
-import '../styles/chat-space.css'
-import { GroupElement } from '../components/groups/group-element.js';
-import { UserSetting } from '../components/user-setting.js/user-setting';
+// import BoopButton from '../components/send-sound';
+import '../styles/styles.root.css'
+import { GroupElement } from '../components/GroupElement.js';
 import { HttpService } from '../api/http-service';
 import { Container, Row, Col} from 'react-bootstrap';
-import { MenuNav } from './nav-menu'
-import { GroupAside } from '../components/groups/group-aside';
+import { Navbar } from '../components/Navbar';
+import { GroupAside } from '../components/GroupList';
+import MessageList from '../components/MessageList';
+import UserProfile from '../components/UserProfile'
+import MessageInteract from '../components/message-interact';
 const http = new HttpService();
 export default class ChatSpace extends React.Component {
 // data.map
@@ -29,30 +31,19 @@ componentDidMount() {
   });
   });
 }
-
   render() {
     const { DataisLoaded, items } = this.state;
     if (!DataisLoaded) return <div>
       <h1> Pleses wait some time.... </h1> </div>;
     return (
-      <div className='card chat-app'>
+      <div className='chatspace' style={{height: "100%"}}>
+        <Container>
+          <Navbar />
+        </Container>
         <Container className='container-space' key={1}>
           <Row>
-            <MenuNav />
-            <Col>
-              <div className='people-list' id='plist'>
-                <Link to="/">Retour</Link>
-                <div className='group-aside'>
-                  <div>Titre du topic</div>
-                  {/* {data && data.map((current, index) => {
-                return (
-                  <div className='group-topic'>
-                    <div className='topic-image'>
-                      <div className='topic-name' id='topic-name' key={current.id}>{current.groupName}</div>
-                    </div>
-                  </div>)
-                })
-              } */}
+            <Col xs={3} className='people-list group-aside'>
+              <div id='plist'>
                   <GroupAside>
                     {items && items.map((current, index) => {
                       return (
@@ -65,19 +56,20 @@ componentDidMount() {
                       )
                     })}
                   </GroupAside>
-                  <UserSetting />
-                  <div className='about' id='about'>CGU</div>
-                </div>
-                <div className='chat'>
-                  <div className='chat-history'>
-                    <div>
-                      <p>Texte ici</p>
-                      <p>premier texte ici</p>
-                    </div>
-                    {/* Message-data text-right */}
-                  </div>
-                </div>
               </div>
+            </Col>
+            <Col>
+            <MessageList />
+            {/*
+              <Col>
+                <Row>
+                  <UserProfile />
+                </Row>
+              </Col>
+            */}
+            <Row>
+              <MessageInteract />
+            </Row>
             </Col>
           </Row>
         </Container>
@@ -85,9 +77,3 @@ componentDidMount() {
     );
   }
 }
-
-// fetch('../assets/dummy-data.json')
-// .then((res) => res.json())
-// .then(function getGroupsInfo(data) {
-//   console.log()
-// });

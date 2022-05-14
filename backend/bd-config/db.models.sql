@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS `users`(
     `name` VARCHAR(50) NOT NULL,
     `surname` VARCHAR(50) NOT NULL, 
     `has_accepted_cgu` TINYINT NOT NULL DEFAULT '0',
-    `api_token` TEXT NOT NULL, 
     PRIMARY KEY (`id`)
 );
 

@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "nodemon --inspect server.js"
+  },
   "dependencies": {
     "abab": "^2.0.5",
     "accepts": "^1.3.8",
@@ -470,9 +475,6 @@
     "yargs": "^16.2.0",
     "yargs-parser": "^20.2.9",
     "yn": "^3.1.1"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC"

@@ -9,24 +9,18 @@ app.use((req, res, next) => {
   next();
 });
 
-// const mongoose = require('mongoose');
-// mongoose
-//   // .connect('mongodb://localhost:27017/piiquante')
-//   .connect('mongodb+srv://kanou:rv7ThZfJylCbxt6v@cluster0.khqpu.mongodb.net/Piiquante?retryWrites=true&w=majority')
-//   .then(() => console.log('Connection à MongoDB réussie !'))
-//   .catch(() => console.log('Connection à MongoDB échouée !'))
-
-const usersRouter = require('./routes/users.routes'); 
-
 app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 // app.use('/api/auth', authRouter);
 
-app.use('/api/users', usersRouter);
-// app.use('/api/groups', groupsRouter);
+const signRoute = require('./routes/sign.route');
+const userRoute = require('./routes/user.route');
+const groupRoute = require('./routes/group.route');
+app.use('/api/sign', signRoute);
+app.use('/api/users', userRoute);
+app.use('/api/groups', groupRoute);
 // app.use('/api/profiles', profilesRouter);
-// app.use('/api/groups/:id/messages', messagesRouter);
 // app.use('/api/groups/:id/messages/comments', commentsRouter);
 
 module.exports = app;

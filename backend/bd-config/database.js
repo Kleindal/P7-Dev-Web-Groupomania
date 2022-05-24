@@ -1,5 +1,3 @@
-const mysql = require('mysql2');
-
 // const database = require("mime-db")
 
 // const dataBase = {
@@ -9,6 +7,7 @@ const mysql = require('mysql2');
 //     db_type:'mysql',
 // }
 
+const mysql = require('mysql2');
 const dataBase = mysql.createPool({
     host: "localhost",
     user: "root",
@@ -16,6 +15,17 @@ const dataBase = mysql.createPool({
     database: 'groupomania',
 });
 
-module.exports = dataBase;
+const mysqlAsync = require('mysql2/promise');
+const dataBaseAsync = mysqlAsync.createPool({
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: 'groupomania',
+});
+
+module.exports = {
+    dataBase,
+    dataBaseAsync
+};
 
 // .promise(console.log('connection réussie'))

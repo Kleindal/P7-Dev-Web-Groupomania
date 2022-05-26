@@ -12,8 +12,6 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 
-
-
 // PROFILE
 module.exports.profileUsers = (req, res) => {
     let sql = `SELECT * FROM user WHERE id = ?`;
@@ -68,6 +66,8 @@ module.exports.updateUsers = async (req, res) => {
     await dataBaseAsync.execute(sqlUpdateEmail, [req.body.email, req.params.id])
         .catch(error => res.status(500).json({ error }));
 
+        // add bio / modifier nom prénom et bio 
+        
     const sqlRetrieveUser = `SELECT id, name, surname, email FROM user WHERE id = ?`;
     const results = await dataBaseAsync.execute(sqlRetrieveUser, [req.params.id])
         .catch(error => res.status(500).json({ error }));

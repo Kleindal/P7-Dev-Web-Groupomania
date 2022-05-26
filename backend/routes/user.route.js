@@ -4,12 +4,9 @@ const router = express.Router();
 const userController = require('../controllers/user.controller');
 const auth = require('../middleware/auth');
 
-router.get("/", userController.getUsers);
-router.get("/profile/me", auth, userController.profileUsers);
-router.get("/profiles/contacts", auth, userController.profilesContacts);
-router.put("/:id", auth, userController.updateUsers);
-router.delete("/:id", auth, userController.deleteUsers);
-
-router.get("/:id/groups", userController.getUserGroups);
+router.get("/", auth, userController.getUsers);
+router.get("/:id", auth, userController.getUser);
+router.patch("/:id", auth, userController.updateUser);
+router.delete("/:id", auth, userController.deleteUser);
 
 module.exports = router;

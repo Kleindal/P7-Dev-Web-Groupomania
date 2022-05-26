@@ -1,4 +1,5 @@
 const { dataBaseAsync} = require('../bd-config/database');
+const { asyncForEach } = require('../utils/async-foreach');
 
 async function queryOneGroup(id) {
     const sql = 'SELECT * FROM `group` WHERE id = ?';
@@ -23,10 +24,15 @@ module.exports.getGroup = async (req, res) => {
 };
 
 module.exports.createGroup = async (req, res, next) => {
+    const isAdmin = req.connectedUser.is_admin === 1;
+    const canCreate = isAdmin;
+    if (!canCreate) {
+        return res.status(403).json();
+    }    
     // console.log(req.connectedUser);
     // return res.status(200).json();
-    const sql = 'INSERT INTO `group` (title, created_by) VALUES (?, ?)';
-    const result = await dataBaseAsync.execute(sql, [req.body.title, req.connectedUser.id])
+    const sql = 'INSERT INTO `group` (title) VALUES (?)';
+    const result = await dataBaseAsync.execute(sql, [req.body.title])
         .catch(() => res.status(500).json());
     const insertedId = result[0].insertId;
     const createdGroup = await queryOneGroup(insertedId);
@@ -34,10 +40,8 @@ module.exports.createGroup = async (req, res, next) => {
 };
 
 module.exports.updateGroup = async (req, res, next) => {
-    const group = await queryOneGroup(req.params.id);
     const isAdmin = req.connectedUser.is_admin === 1;
-    const isGroupCreator = req.connectedUser.id === group.created_by;
-    const canUpdateGroup = isAdmin || isGroupCreator;
+    const canUpdateGroup = isAdmin;
     if (!canUpdateGroup) {
         return res.status(403).json();
     }    
@@ -50,7 +54,8 @@ module.exports.updateGroup = async (req, res, next) => {
 };
 
 module.exports.deleteGroup = async (req, res, next) => {
-    const canDeleteGroup = req.connectedUser.is_admin === 1;
+    const isAdmin = req.connectedUser.is_admin === 1;
+    const canDeleteGroup = isAdmin;
     if (!canDeleteGroup) {
         return res.status(403).json();
     }
@@ -62,54 +67,106 @@ module.exports.deleteGroup = async (req, res, next) => {
 };
 
 
-module.exports.joinGroup = async (req, res, next) => {
-    const sql = 'INSERT INTO `group_user` (group_id, user_id) VALUES (?,?)';
-    await dataBaseAsync.execute(sql, [req.params.id, req.connectedUser.id])
-        .catch(() => res.status(500).json());
-    res.status(200).json();
-};
-module.exports.leaveGroup = async (req, res, next) => {
-    const sql = 'DELETE FROM `group_user` WHERE group_id = ? AND user_id = ?';
-    await dataBaseAsync.execute(sql, [req.params.id, req.connectedUser.id])
-        .catch(() => res.status(500).json());
-    res.status(200).json();
-};
 
-
-
-async function queryOneMessage(id, groupId) {
-    const sql = 'SELECT * FROM `message` WHERE id = ? AND group_id = ?';
+async function queryOnePost(id, groupId) {
+    const sql = 'SELECT * FROM `post` WHERE id = ? AND group_id = ?';
     const results = await dataBaseAsync.execute(sql, [id, groupId]);
     return results[0][0];
 }
 
-module.exports.getMessages = async (req, res, next) => {
-    const sql = 'SELECT * FROM `message` WHERE group_id = ?';
+module.exports.getPosts = async (req, res, next) => {
+    const sql = 'SELECT * FROM `post` WHERE group_id = ?';
     const results = await dataBaseAsync.execute(sql, [req.params.group_id])
         .catch(() => res.status(500).json());
     res.status(200).json(results[0] ?? []);
 };
 
-module.exports.createMessage = async (req, res, next) => {
-    const sql = 'INSERT INTO `message` (author_id, group_id, text) VALUES (?,?,?)'
-    const result = await dataBaseAsync.execute(sql, [req.connectedUser.id, req.params.group_id, req.body.text])
+module.exports.createPost = async (req, res, next) => {
+    const sql = 'INSERT INTO `post` (created_by, group_id, title, image_url, body) VALUES (?,?,?,?,?)'
+    const result = await dataBaseAsync.execute(sql, [req.connectedUser.id, req.params.group_id, req.body.title, req.body.image_url, req.body.body])
         .catch(() => res.status(500).json());
     const insertedId = result[0].insertId;
-    const createdMessage = await queryOneMessage(insertedId, req.params.group_id);
+    const createdMessage = await queryOnePost(insertedId, req.params.group_id);
     return res.status(201).json(createdMessage);
 };
 
-module.exports.deleteMessage = async (req, res, next) => {
+module.exports.updatePost = async (req, res, next) => {
     const isAdmin = req.connectedUser.is_admin === 1;
-    const message = await queryOneMessage(req.params.id, req.params.group_id);
-    const isMessageCreator = req.connectedUser.id === message?.author_id;
-    const canDeleteMessage = isAdmin || isMessageCreator;
+    const post = await queryOnePost(req.params.id, req.params.group_id);
+    const isOwner = req.connectedUser.id === post?.author_id;
+    const canUpdate = isAdmin || isOwner;
+    if (!canUpdate) {
+        return res.status(403).json();
+    }
+
+    const sqlUpdate = `UPDATE post SET :fieldsToUpdate WHERE id = ? AND group_id = ?`;
+    const sqlToUpdateParts = [];
+    const body = req.body;
+    
+    await asyncForEach(Object.keys(body), async (key) => {
+        // Les champs qu'on ne doit pas pouvoir mettre à jour
+        const ignoredFields = ['id', 'group_id', 'created_by', 'created_at', 'updated_at'];
+        if (ignoredFields.includes(key)) {
+            // Si c'est un champs ignoré on retourne
+            return;
+        }
+        // On récupère la valeur de la clé
+        const value = body[key];
+        // On l'ajoute à la variable sqlToUpdateParts
+        sqlToUpdateParts.push(`${key} = '${value}'`);
+    });
+    // On transforme le tableau sqlToUpdateParts en une string
+    const sqlToUpdate = sqlToUpdateParts.join(', ');
+    // On remplace le texte :fieldsToUpdate par la string généré juste avant
+    const sqlToExecute = sqlUpdate.replace(':fieldsToUpdate', sqlToUpdate);
+
+    await dataBaseAsync.execute(sqlToExecute, [req.params.id, req.params.group_id])
+        .catch (() => res.status(500).json());
+
+    const postUpdated = await queryOnePost(req.params.id, req.params.group_id);
+    res.status(200).json(postUpdated);
+};
+
+module.exports.deletePost = async (req, res, next) => {
+    const isAdmin = req.connectedUser.is_admin === 1;
+    const message = await queryOnePost(req.params.id, req.params.group_id);
+    const isOwner = req.connectedUser.id === message?.author_id;
+    const canDeleteMessage = isAdmin || isOwner;
     if (!canDeleteMessage) {
         return res.status(403).json();
     }
 
-    const sql = 'DELETE FROM `message` WHERE id = ? AND group_id = ?';
+    const sql = 'DELETE FROM `post` WHERE id = ? AND group_id = ?';
     await dataBaseAsync.execute(sql, [req.params.id, req.params.group_id])
         .catch (() => res.status(500).json());
+    return res.status(200).json();
+};
+
+
+
+module.exports.likePost = async (req, res, next) => {
+    const post = await queryOnePost(req.params.id, req.params.group_id);
+    if (!post) {
+        res.status(404).json('Ce post n\'existe pas ou plus');
+    }
+
+    const sql = 'INSERT INTO `like_post` (post_id, user_id) VALUES (?,?)';
+    await dataBaseAsync.execute(sql, [req.params.id, req.connectedUser.id])
+        .catch((e) => {
+            if (e.code === 'ER_DUP_ENTRY') {
+                res.status(403).json('Vous ne pouvez pas Like 2 fois le même post');
+            }
+            res.status(500).json()
+        });
+    return res.status(200).json();
+};
+
+module.exports.unlikePost = async (req, res, next) => {
+    const sql = 'DELETE FROM `like_post` WHERE user_id = ? AND post_id = ?';
+    const results = await dataBaseAsync.execute(sql, [req.connectedUser.id, req.params.id])
+        .catch (() => res.status(500).json());
+    if (results[0].affectedRows === 0) {
+        res.status(403).json('Vous ne pouvez pas retirer de Like sur ce Post');
+    }
     return res.status(200).json();
 };

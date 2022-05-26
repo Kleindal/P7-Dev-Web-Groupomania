@@ -9,10 +9,11 @@
     "debug": "nodemon --inspect server.js"
   },
   "dependencies": {
-    "jsonwebtoken": "^8.5.1",
     "bcrypt": "^5.0.1",
-    "express": "^4.17.2",
     "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.4",
     "mysql2": "^2.3.3"
   },
   "author": "",

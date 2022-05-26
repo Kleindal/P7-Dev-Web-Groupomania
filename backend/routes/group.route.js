@@ -9,12 +9,13 @@ router.post("/", auth, groupController.createGroup);
 router.patch("/:id", auth, groupController.updateGroup);
 router.delete("/:id", auth, groupController.deleteGroup);
 
-router.patch('/:id/join', auth, groupController.joinGroup);
-router.patch('/:id/leave', auth, groupController.leaveGroup);
+router.get("/:group_id/posts", auth, groupController.getPosts);
+router.post("/:group_id/posts", auth, groupController.createPost);
+router.patch("/:group_id/posts/:id", auth, groupController.updatePost);
+router.delete("/:group_id/posts/:id", auth, groupController.deletePost);
 
-router.get("/:group_id/messages", auth, groupController.getMessages);
-router.post("/:group_id/messages", auth, groupController.createMessage);
-router.delete("/:group_id/messages/:id", auth, groupController.deleteMessage);
+router.post("/:group_id/posts/:id/like", auth, groupController.likePost);
+router.delete("/:group_id/posts/:id/unlike", auth, groupController.unlikePost);
 
 
 module.exports = router;

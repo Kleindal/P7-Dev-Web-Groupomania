@@ -1,3 +1,5 @@
+// imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+
 const http = require('http');
 const app = require("./app");
 

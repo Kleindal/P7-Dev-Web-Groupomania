@@ -1,18 +1,15 @@
-const mysql = require('mysql2');
-const dataBase = mysql.createPool({
+const config = {
     host: "localhost",
     user: "root",
     password: "root",
-    database: 'groupomania',
-});
+    database: 'groupomania_v2',
+};
+
+const mysql = require('mysql2');
+const dataBase = mysql.createPool(config);
 
 const mysqlAsync = require('mysql2/promise');
-const dataBaseAsync = mysqlAsync.createPool({
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: 'groupomania',
-});
+const dataBaseAsync = mysqlAsync.createPool(config);
 
 module.exports = {
     dataBase,

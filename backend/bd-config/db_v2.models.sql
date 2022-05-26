@@ -31,5 +31,6 @@ CREATE TABLE IF NOT EXISTS `user`(
 
 CREATE TABLE IF NOT EXISTS `like_post`(
   	`post_id` INT NOT NULL, 
-    `user_id` INT NOT NULL
+    `user_id` INT NOT NULL,
+    PRIMARY KEY (`post_id`, `user_id`)
 );

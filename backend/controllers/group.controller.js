@@ -75,37 +75,73 @@ async function queryOnePost(id, groupId) {
 }
 
 module.exports.getPosts = async (req, res, next) => {
-    const sql = 'SELECT * FROM `post` WHERE group_id = ?';
+    let sql = `SELECT p.*, GROUP_CONCAT(lp.user_id) AS liked_by 
+        FROM \`post\` p
+        LEFT JOIN \`like_post\` lp ON lp.post_id = p.id
+        WHERE group_id = ?
+        GROUP BY id`;
+    if (req.query.order === 'desc') {
+        sql = sql + ' ORDER BY id DESC';
+    }
     const results = await dataBaseAsync.execute(sql, [req.params.group_id])
         .catch(() => res.status(500).json());
-    res.status(200).json(results[0] ?? []);
+    const posts = results[0] ?? [];
+    
+    const mappedPost = posts.map(post => {
+        const liked_users = post.liked_by?.split(',') ?? [];
+        const postToReturn = {
+            ...post,
+            like_count: liked_users.length,
+            connected_user_has_liked: liked_users.includes(req.connectedUser.id.toString())
+        }
+        delete postToReturn.liked_by;
+        return postToReturn;
+    });
+
+    res.status(200).json(mappedPost);
+};
+
+module.exports.getPost = async (req, res, next) => {
+    const post = await queryOnePost(req.params.id, req.params.group_id);
+    res.status(200).json(post);
 };
 
 module.exports.createPost = async (req, res, next) => {
-    const sql = 'INSERT INTO `post` (created_by, group_id, title, image_url, body) VALUES (?,?,?,?,?)'
-    const result = await dataBaseAsync.execute(sql, [req.connectedUser.id, req.params.group_id, req.body.title, req.body.image_url, req.body.body])
-        .catch(() => res.status(500).json());
+    //@TODO Gérer les paramètres manquants
+    let imageUrl = null;
+    if (req.file) {
+        imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    }
+    const sql = 'INSERT INTO `post` (created_by, group_id, title, image_url, body) VALUES (?,?,?,?,?)';
+    console.log([req.connectedUser.id, req.params.group_id, req.body.title, imageUrl, req.body.body]);
+    const result = await dataBaseAsync.execute(sql, [req.connectedUser.id, req.params.group_id, req.body.title, imageUrl, req.body.body])
+    console.log(result);
     const insertedId = result[0].insertId;
-    const createdMessage = await queryOnePost(insertedId, req.params.group_id);
-    return res.status(201).json(createdMessage);
+    const createdPost = await queryOnePost(insertedId, req.params.group_id);
+    return res.status(201).json(createdPost);
 };
 
 module.exports.updatePost = async (req, res, next) => {
     const isAdmin = req.connectedUser.is_admin === 1;
     const post = await queryOnePost(req.params.id, req.params.group_id);
-    const isOwner = req.connectedUser.id === post?.author_id;
+    const isOwner = req.connectedUser.id === post?.created_by;
     const canUpdate = isAdmin || isOwner;
     if (!canUpdate) {
         return res.status(403).json();
     }
+    console.log(req.body);
 
     const sqlUpdate = `UPDATE post SET :fieldsToUpdate WHERE id = ? AND group_id = ?`;
     const sqlToUpdateParts = [];
     const body = req.body;
     
+    if (req.file) {
+        const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        sqlToUpdateParts.push(`image_url = '${imageUrl}'`);
+    }
     await asyncForEach(Object.keys(body), async (key) => {
         // Les champs qu'on ne doit pas pouvoir mettre à jour
-        const ignoredFields = ['id', 'group_id', 'created_by', 'created_at', 'updated_at'];
+        const ignoredFields = ['id', 'group_id', 'created_by', 'created_at', 'updated_at', 'file'];
         if (ignoredFields.includes(key)) {
             // Si c'est un champs ignoré on retourne
             return;
@@ -129,10 +165,11 @@ module.exports.updatePost = async (req, res, next) => {
 
 module.exports.deletePost = async (req, res, next) => {
     const isAdmin = req.connectedUser.is_admin === 1;
-    const message = await queryOnePost(req.params.id, req.params.group_id);
-    const isOwner = req.connectedUser.id === message?.author_id;
-    const canDeleteMessage = isAdmin || isOwner;
-    if (!canDeleteMessage) {
+    const post = await queryOnePost(req.params.id, req.params.group_id);
+    const isOwner = req.connectedUser.id === post?.created_by;
+    console.log(req.connectedUser.id, post?.created_by);
+    const canDelete = isAdmin || isOwner;
+    if (!canDelete) {
         return res.status(403).json();
     }
 

@@ -33,8 +33,9 @@ module.exports.getUser = async (req, res) => {
 };
 
 module.exports.updateUser = async (req, res) => {
+    const userId = req.params.id === 'me' ? req.connectedUser.id : req.params.id;
     const isAdmin = req.connectedUser.is_admin === 1;
-    const isOwnerAccount = req.params.id == req.connectedUser.id;
+    const isOwnerAccount = userId == req.connectedUser.id;
     const canUpdateUser = isAdmin || isOwnerAccount;
     if (!canUpdateUser) {
         res.status(403).json({error: 'You cannot update this user'});
@@ -58,24 +59,25 @@ module.exports.updateUser = async (req, res) => {
     const sqlToUpdate = sqlToUpdateParts.join(', ');
     const sqlToExecute = sqlUpdate.replace(':fieldsToUpdate', sqlToUpdate);
 
-    await dataBaseAsync.execute(sqlToExecute, [req.params.id])
+    await dataBaseAsync.execute(sqlToExecute, [userId])
         .catch(error => res.status(500).json({ error }));
 
         // add bio / modifier nom prénom et bio 
-    const user = await queryOneUser(req.params.id);
+    const user = await queryOneUser(userId);
     res.status(200).json(user);
 };
 
 module.exports.deleteUser = async (req, res) => {
+    const userId = req.params.id === 'me' ? req.connectedUser.id : req.params.id;
     const isAdmin = req.connectedUser.is_admin === 1;
-    const isOwnerAccount = req.params.id == req.connectedUser.id;
+    const isOwnerAccount = userId == req.connectedUser.id;
     const canDelete = isAdmin || isOwnerAccount;
     if (!canDelete) {
         return res.status(403).json();
     }
 
     const sql = 'DELETE FROM `user` WHERE id = ?';
-    await dataBaseAsync.execute(sql, [req.params.id])
+    await dataBaseAsync.execute(sql, [userId])
         .catch (() => res.status(500).json());
     return res.status(200).json();
 };

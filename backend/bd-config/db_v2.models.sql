@@ -5,7 +5,7 @@ USE `groupomania_v2`;
 CREATE TABLE IF NOT EXISTS `post`(
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
 	`group_id` INT NOT NULL, 
-    `title` VARCHAR(60) NOT NULL UNIQUE,
+    `title` VARCHAR(60) NOT NULL,
     `image_url` TEXT,
 	`body` TEXT NOT NULL,
     `created_by` INT NOT NULL, 

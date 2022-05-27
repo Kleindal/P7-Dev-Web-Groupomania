@@ -2,10 +2,12 @@ const { dataBaseAsync } = require('../bd-config/database');
 const bcrypt = require('bcrypt');
 const { asyncForEach } = require('../utils/async-foreach');
 
-function removePrivateInfo(user) {
+function transformPrivateInfo(user) {
     delete user.password;
-    delete user.is_admin;
     delete user.has_accepted_cgu;
+
+    user.is_admin = user.is_admin === 1;
+
     return user;
 }
 
@@ -13,7 +15,7 @@ async function queryOneUser(id) {
     const sql = `SELECT * FROM user WHERE id = ?`;
     const user = await dataBaseAsync.execute(sql, [id])
         .then(results => results[0][0]);
-    return removePrivateInfo(user);
+    return transformPrivateInfo(user);
 }
 
 module.exports.getUsers = async (req, res, next) => {
@@ -21,7 +23,7 @@ module.exports.getUsers = async (req, res, next) => {
     const users = await dataBaseAsync.execute(sql)
         .catch(() => res.status(500).json())
         .then(results => results[0]);
-    users.forEach(user => removePrivateInfo(user));
+    users.forEach(user => transformPrivateInfo(user));
     res.status(200).json(users);
 };
 

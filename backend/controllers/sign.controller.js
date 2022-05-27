@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 // SIGN UP
 module.exports.signupUsers = (req, res, next) => {
-    let sql = `INSERT INTO user (email, password, name, surname) VALUES (?,?,?,?)`;
+    let sql = `INSERT INTO user (email, password, name, surname, has_accepted_cgu) VALUES (?,?,?,?,1)`;
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         dataBase.execute(sql, [req.body.email, hash, req.body.name, req.body.surname], (err, result) => {

@@ -18,9 +18,11 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 const signRoute = require('./routes/sign.route');
 const userRoute = require('./routes/user.route');
 const groupRoute = require('./routes/group.route');
+const postRoute = require('./routes/post.route');
 app.use('/api/sign', signRoute);
 app.use('/api/users', userRoute);
 app.use('/api/groups', groupRoute);
+app.use('/api/posts', postRoute);
 
 
 module.exports = app;

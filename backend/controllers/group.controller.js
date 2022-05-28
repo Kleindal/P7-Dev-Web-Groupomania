@@ -113,9 +113,7 @@ module.exports.createPost = async (req, res, next) => {
         imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     }
     const sql = 'INSERT INTO `post` (created_by, group_id, title, image_url, body) VALUES (?,?,?,?,?)';
-    console.log([req.connectedUser.id, req.params.group_id, req.body.title, imageUrl, req.body.body]);
     const result = await dataBaseAsync.execute(sql, [req.connectedUser.id, req.params.group_id, req.body.title, imageUrl, req.body.body])
-    console.log(result);
     const insertedId = result[0].insertId;
     const createdPost = await queryOnePost(insertedId, req.params.group_id);
     return res.status(201).json(createdPost);
@@ -129,10 +127,9 @@ module.exports.updatePost = async (req, res, next) => {
     if (!canUpdate) {
         return res.status(403).json();
     }
-    console.log(req.body);
-
     const sqlUpdate = `UPDATE post SET :fieldsToUpdate WHERE id = ? AND group_id = ?`;
     const sqlToUpdateParts = [];
+    const sqlValues = [];
     const body = req.body;
     
     if (req.file) {
@@ -149,15 +146,16 @@ module.exports.updatePost = async (req, res, next) => {
         // On récupère la valeur de la clé
         const value = body[key];
         // On l'ajoute à la variable sqlToUpdateParts
-        sqlToUpdateParts.push(`${key} = '${value}'`);
+        sqlToUpdateParts.push(`${key} = ?`);
+        sqlValues.push(value);
     });
     // On transforme le tableau sqlToUpdateParts en une string
     const sqlToUpdate = sqlToUpdateParts.join(', ');
     // On remplace le texte :fieldsToUpdate par la string généré juste avant
     const sqlToExecute = sqlUpdate.replace(':fieldsToUpdate', sqlToUpdate);
 
-    await dataBaseAsync.execute(sqlToExecute, [req.params.id, req.params.group_id])
-        .catch (() => res.status(500).json());
+    await dataBaseAsync.execute(sqlToExecute, [ ...sqlValues, req.params.id, req.params.group_id])
+        .catch ((e) => res.status(500).json(e));
 
     const postUpdated = await queryOnePost(req.params.id, req.params.group_id);
     res.status(200).json(postUpdated);

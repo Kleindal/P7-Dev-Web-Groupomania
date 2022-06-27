@@ -16,7 +16,8 @@
 
 ## 👩‍💻 Explication du projet
 
-L'objectif de ce projet est de créer une API reprendrant les concepts de base d'une application de publication de posts (type Workplace, Reddit, 9gag), pour l'entreprise Groupomania. Les utilisateurs pourront alors publier leurs propres posts pouvant contenir à la fois du texte et des images.
+L'objectif de ce projet est de créer une API reprennant les concepts de base d'une application de publication de posts (type Workplace, Reddit, 9gag), pour l'entreprise Groupomania. Les utilisateurs pourront publier leurs propres posts pouvant contenir à la fois du texte et des images.
+Les posts pourront être modifiés, supprimés et likés. 
 
 Ce projet a été réalisé en :
    - [NodeJS](https://nodejs.org/en/about/releases/)
